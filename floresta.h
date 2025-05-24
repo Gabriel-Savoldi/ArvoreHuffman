@@ -9,7 +9,7 @@ typedef struct tree Tree;
 struct floresta
 {
 	struct floresta *prox;
-	Tree info;
+	Tree *info;
 };
 typedef struct floresta Floresta;
 
@@ -23,18 +23,30 @@ char isEmpty(Floresta *lista)
 	return lista == NULL;
 }
 
-Floresta *novaCaixa(int freq, int simb)
+Tree* novaArvore(Tree *esq, int simb, int freq, Tree *dir)
 {
-	Floresta *f = (Floresta *)malloc(sizeof(Floresta));
-	f->info.esq = f->info.dir = NULL;
-	f->info.freq=freq;
-	f->info.simbolo=simb;
+	Tree *no = (Tree*)malloc(sizeof(Tree));
+	no->esq = esq;
+	no->dir = dir;
+	no->freq=freq;
+	no->simbolo=simb;
+	
+	return  no;
 }
 
-void inserir(Floresta **lista, int freq, int simb)
+Floresta * novaFloresta(Tree* esq, int simb,int freq,Tree *dir)
 {
-	Floresta *aux = novaCaixa(freq, simb);
+	Floresta *f = (Floresta *) malloc(sizeof(Floresta));
+	f->info = novaArvore(esq,simb,freq,dir);
+	f->prox=NULL;
+	return f;
+}
 
+// tem coisa errada ak heim
+void inserir(Tree *esq,Floresta **lista,int simb, int freq, Tree* dir)
+{
+	Floresta *aux;
+	aux = novaFloresta(esq,simb,freq,dir); // tem q mudar da qui para baixo
 	if (*lista == NULL || aux->info.freq<(*lista)->info.freq)
 	{
 		aux->prox=(*lista);
@@ -53,10 +65,13 @@ void inserir(Floresta **lista, int freq, int simb)
 }
 
 
-void retira(Floresta **lista,Floresta *retorno)
+Tree* retira(Floresta **lista)
 {
-	retorno=*lista;
+	Tree *aux = (*lista)->info;
+	Floresta *rm = *lista;
 	*lista= (*lista)->prox;
+	free(*lista);
+	return aux;
 }
 
 
