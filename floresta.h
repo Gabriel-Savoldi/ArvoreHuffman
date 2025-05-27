@@ -42,12 +42,11 @@ Floresta * novaFloresta(Tree* esq, int simb,int freq,Tree *dir)
 	return f;
 }
 
-// tem coisa errada ak heim
 void inserir(Tree *esq,Floresta **lista,int simb, int freq, Tree* dir)
 {
 	Floresta *aux;
-	aux = novaFloresta(esq,simb,freq,dir); // tem q mudar da qui para baixo
-	if (*lista == NULL || aux->info.freq<(*lista)->info.freq)
+	aux = novaFloresta(esq,simb,freq,dir); 
+	if (*lista == NULL || aux->info->freq < (*lista)->info->freq)
 	{
 		aux->prox=(*lista);
 		*lista=aux;
@@ -55,7 +54,7 @@ void inserir(Tree *esq,Floresta **lista,int simb, int freq, Tree* dir)
 	else
 	{
 		Floresta *ant=*lista;
-		while(ant->prox!=null && ant->prox->info.freq<aux->info.freq)
+		while(ant->prox!=null && ant->prox->info->freq < aux->info->freq)
 		{
 			ant=ant->prox;
 		}
