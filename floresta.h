@@ -13,12 +13,12 @@ struct floresta
 };
 typedef struct floresta Floresta;
 
-void init(Floresta **lista)
+void initFloresta(Floresta **lista)
 {
 	*lista = NULL;
 }
 
-char isEmpty(Floresta *lista)
+char isEmptyFlo(Floresta *lista)
 {
 	return lista == NULL;
 }
@@ -28,8 +28,8 @@ Tree* novaArvore(Tree *esq, int simb, int freq, Tree *dir)
 	Tree *no = (Tree*)malloc(sizeof(Tree));
 	no->esq = esq;
 	no->dir = dir;
-	no->freq=freq;
-	no->simbolo=simb;
+	no->freq = freq;
+	no->simb = simb;
 	
 	return  no;
 }
@@ -42,7 +42,7 @@ Floresta * novaFloresta(Tree* esq, int simb,int freq,Tree *dir)
 	return f;
 }
 
-void inserir(Tree *esq,Floresta **lista,int simb, int freq, Tree* dir)
+void inserirFloresta(Tree *esq,Floresta **lista,int simb, int freq, Tree* dir)
 {
 	Floresta *aux;
 	aux = novaFloresta(esq,simb,freq,dir); 
@@ -53,8 +53,8 @@ void inserir(Tree *esq,Floresta **lista,int simb, int freq, Tree* dir)
 	}
 	else
 	{
-		Floresta *ant=*lista;
-		while(ant->prox!=null && ant->prox->info->freq < aux->info->freq)
+		Floresta *ant= *lista;
+		while(ant->prox!=NULL && ant->prox->info->freq < aux->info->freq)
 		{
 			ant=ant->prox;
 		}
@@ -63,15 +63,58 @@ void inserir(Tree *esq,Floresta **lista,int simb, int freq, Tree* dir)
 	}
 }
 
+exibirNo(Tree *no)
+{
+	printf("[%d]\t[%d]\n",no->freq,no->simb);
+}
 
-Tree* retira(Floresta **lista)
+
+void exibirFlo(Floresta *f)
+{
+	printf("\n* * * F L O R E S T A * * *\n");
+	printf("Freq.\tSimb.\n");
+	while(f!=NULL)
+	{
+		exibirNo(f->info);
+		f=f->prox;
+	}
+}
+
+
+void exibirArvH(Tree *raiz, int n){
+	if(raiz!=NULL){
+		n++;
+		exibirArvH(raiz->dir, n);
+		int i;
+		for(i=0; i<5*n; i++)
+			printf(" ");
+		if(raiz->freq==0)
+        	printf("(%d)\n", raiz->simb);
+        else
+			printf("(%d, %d)\n",raiz->simb,raiz->freq);
+		exibirArvH(raiz->esq,n);
+	}
+}
+
+Tree* retiraFloresta(Floresta **lista)
 {
 	Tree *aux = (*lista)->info;
 	Floresta *rm = *lista;
 	*lista= (*lista)->prox;
-	free(*lista);
+	free(rm);
 	return aux;
 }
 
-
+void exibirFloresta(Floresta *f)
+{
+	if(f!=NULL){
+		printf("\n* * * F L O R E S T A * * *\n");
+		printf("FREQ.\tSIMBOLO\n");
+		while(f!=NULL)
+		{
+			printf("%d\t%d\n",f->info->freq,f->info->simb);
+			f=f->prox;
+		}	
+	}
+}
 
